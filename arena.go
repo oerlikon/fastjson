@@ -1,8 +1,6 @@
 package fastjson
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // Arena may be used for fast creation and re-use of Values.
 //

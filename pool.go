@@ -1,8 +1,6 @@
 package fastjson
 
-import (
-	"sync"
-)
+import "sync"
 
 // ParserPool may be used for pooling Parsers for similarly typed JSONs.
 type ParserPool struct {

@@ -1,8 +1,6 @@
 package fastjson
 
-import (
-	"errors"
-)
+import "errors"
 
 // Scanner scans a series of JSON values. Values may be delimited by whitespace.
 //

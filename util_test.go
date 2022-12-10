@@ -1,8 +1,6 @@
 package fastjson
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestStartEndString(t *testing.T) {
 	f := func(s, expectedResult string) {

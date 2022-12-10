@@ -1,8 +1,6 @@
 package fastjson
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestObjectDelSet(t *testing.T) {
 	var p Parser
