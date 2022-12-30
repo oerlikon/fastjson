@@ -210,6 +210,12 @@ func ParseBestEffort(s string) float64 {
 		}
 	}
 
+	// the integer part might be elided to remain compliant
+	// with https://go.dev/ref/spec#Floating-point_literals
+	if s[i] == '.' && (i+1 >= uint(len(s)) || s[i+1] < '0' || s[i+1] > '9') {
+		return 0
+	}
+
 	d := uint64(0)
 	j := i
 	for i < uint(len(s)) {
@@ -229,7 +235,7 @@ func ParseBestEffort(s string) float64 {
 		}
 		break
 	}
-	if i <= j {
+	if i <= j && s[i] != '.' {
 		s = s[i:]
 		if strings.HasPrefix(s, "+") {
 			s = s[1:]
@@ -260,7 +266,9 @@ func ParseBestEffort(s string) float64 {
 		// Parse fractional part.
 		i++
 		if i >= uint(len(s)) {
-			return 0
+			// the fractional part may be elided to remain compliant
+			// with https://go.dev/ref/spec#Floating-point_literals
+			return f
 		}
 		k := i
 		for i < uint(len(s)) {
@@ -359,6 +367,12 @@ func Parse(s string) (float64, error) {
 		}
 	}
 
+	// the integer part might be elided to remain compliant
+	// with https://go.dev/ref/spec#Floating-point_literals
+	if s[i] == '.' && (i+1 >= uint(len(s)) || s[i+1] < '0' || s[i+1] > '9') {
+		return 0, fmt.Errorf("missing integer and fractional part in %q", s)
+	}
+
 	d := uint64(0)
 	j := i
 	for i < uint(len(s)) {
@@ -378,7 +392,7 @@ func Parse(s string) (float64, error) {
 		}
 		break
 	}
-	if i <= j {
+	if i <= j && s[i] != '.' {
 		ss := s[i:]
 		if strings.HasPrefix(ss, "+") {
 			ss = ss[1:]
@@ -409,7 +423,9 @@ func Parse(s string) (float64, error) {
 		// Parse fractional part.
 		i++
 		if i >= uint(len(s)) {
-			return 0, fmt.Errorf("cannot parse fractional part in %q", s)
+			// the fractional part might be elided to remain compliant
+			// with https://go.dev/ref/spec#Floating-point_literals
+			return f, nil
 		}
 		k := i
 		for i < uint(len(s)) {
