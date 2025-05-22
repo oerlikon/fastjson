@@ -28,7 +28,6 @@ func TestValidateSimple(t *testing.T) {
 	if err := Validate(`XDF`); err == nil {
 		t.Fatalf("validation unexpectedly passed")
 	}
-
 	if err := ValidateBytes([]byte(`{"foo":["bar", 123]}`)); err != nil {
 		t.Fatalf("cannot validate valid JSON: %s", err)
 	}
@@ -48,7 +47,7 @@ func TestValidateNumberZeroLen(t *testing.T) {
 }
 
 func TestValidate(t *testing.T) {
-	var tests = []string{
+	for i, test := range []string{
 		"",
 		"   ",
 		" z",
@@ -148,12 +147,9 @@ func TestValidate(t *testing.T) {
 		" null ",
 		" nulll ",
 		"no",
-	}
-	for i, test := range tests {
+	} {
 		in := []byte(test)
-		got := ValidateBytes(in) == nil
-		exp := json.Valid(in)
-
+		got, exp := ValidateBytes(in) == nil, json.Valid(in)
 		if got != exp {
 			t.Errorf("#%d: %q got valid? %v, exp? %v", i, in, got, exp)
 		}

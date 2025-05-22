@@ -236,10 +236,7 @@ func ParseBestEffort(s string) float64 {
 		break
 	}
 	if i <= j && s[i] != '.' {
-		s = s[i:]
-		if strings.HasPrefix(s, "+") {
-			s = s[1:]
-		}
+		s = strings.TrimPrefix(s[i:], "+")
 		// "infinity" is needed for OpenMetrics support.
 		// See https://github.com/OpenObservability/OpenMetrics/blob/master/OpenMetrics.md
 		if strings.EqualFold(s, "inf") || strings.EqualFold(s, "infinity") {
@@ -393,10 +390,7 @@ func Parse(s string) (float64, error) {
 		break
 	}
 	if i <= j && s[i] != '.' {
-		ss := s[i:]
-		if strings.HasPrefix(ss, "+") {
-			ss = ss[1:]
-		}
+		ss := strings.TrimPrefix(s[i:], "+")
 		// "infinity" is needed for OpenMetrics support.
 		// See https://github.com/OpenObservability/OpenMetrics/blob/master/OpenMetrics.md
 		if strings.EqualFold(ss, "inf") || strings.EqualFold(ss, "infinity") {
@@ -507,5 +501,7 @@ func Parse(s string) (float64, error) {
 	return 0, fmt.Errorf("cannot parse float64 from %q", s)
 }
 
-var inf = math.Inf(1)
-var nan = math.NaN()
+var (
+	inf = math.Inf(1)
+	nan = math.NaN()
+)
