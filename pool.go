@@ -46,5 +46,6 @@ func (ap *ArenaPool) Get() *Arena {
 //
 // a and objects created by a cannot be used after a is put into ap.
 func (ap *ArenaPool) Put(a *Arena) {
+	a.Reset()
 	ap.pool.Put(a)
 }
